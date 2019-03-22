@@ -29,7 +29,7 @@ paths:
           schema:
             type: integer
             format: int64
-        - name: slaug
+        - name: slug
           in: query
           description: Slug of Page
           required: false
@@ -47,7 +47,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Pages"
-        default:
+        500:
           description: Unexpected error
           content:
             application/json:
@@ -59,9 +59,9 @@ paths:
       tags:
         - pages
       responses:
-        '201':
+        201:
           description: Null response
-        default:
+        500:
           description: Unexpected error
           content:
             application/json:
@@ -82,13 +82,13 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        200:
           description: Expected response to a valid request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Page"
-        default:
+        500:
           description: Unexpected error
           content:
             application/json:
