@@ -1,69 +1,84 @@
-openapi: "3.0.0"
+openapi: "3.0.2"
 info:
   version: 1.0.0
-  title: Swagger Petstore
+  title: MyWiki
   license:
     name: MIT
 servers:
-  - url: http://petstore.swagger.io/v1
+  - url: http://api.smartbrood.com/v1
 paths:
-  /pets:
+  /pages:
     get:
-      summary: List all pets
-      operationId: listPets
       tags:
-        - pets
+        - pages
+      summary: List of Pages
+      description: List of Wiki Pages
+      operationId: listPages
       parameters:
         - name: limit
           in: query
-          description: How many items to return at one time (max 100)
+          description: How many items to return at one time
           required: false
           schema:
             type: integer
             format: int32
+        - name: id
+          in: query
+          description: Id of Page
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: slaug
+          in: query
+          description: Slug of Page
+          required: false
+          schema:
+            type: string
       responses:
-        '200':
-          description: A paged array of pets
+        200:
+          description: Expected response to a valid request
           headers:
             x-next:
               description: A link to the next page of responses
               schema:
                 type: string
           content:
-            application/json:    
+            application/json:
               schema:
-                $ref: "#/components/schemas/Pets"
+                $ref: "#/components/schemas/Pages"
         default:
-          description: unexpected error
+          description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
     post:
-      summary: Create a pet
-      operationId: createPets
+      summary: Create a Page
+      operationId: createPage
       tags:
-        - pets
+        - pages
       responses:
         '201':
           description: Null response
         default:
-          description: unexpected error
+          description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /pets/{petId}:
+                
+  /pages/{pageSlug}:
     get:
-      summary: Info for a specific pet
-      operationId: showPetById
+      summary: Page
+      operationId: getPage
       tags:
-        - pets
+        - pages
       parameters:
-        - name: petId
+        - name: pageSlug
           in: path
           required: true
-          description: The id of the pet to retrieve
+          description: The slug of the Page to retrieve
           schema:
             type: string
       responses:
@@ -72,31 +87,36 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Pets"
+                $ref: "#/components/schemas/Page"
         default:
-          description: unexpected error
+          description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+                
 components:
   schemas:
-    Pet:
+    Page:
       required:
         - id
-        - name
+        - title
+        - slug
+        - content
       properties:
         id:
           type: integer
           format: int64
-        name:
+        title:
           type: string
-        tag:
+        slug:
           type: string
-    Pets:
+        content:
+          type: string
+    Pages:
       type: array
       items:
-        $ref: "#/components/schemas/Pet"
+        $ref: "#/components/schemas/Page"
     Error:
       required:
         - code
