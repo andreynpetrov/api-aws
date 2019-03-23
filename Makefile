@@ -1,4 +1,4 @@
-.PHONY: install
+.PHONY: install run publish
 
 install:
 	./setup_11.x.sh
@@ -10,3 +10,6 @@ install:
 
 run:
 	vue ui --host 0.0.0.0 
+
+publish:
+	cd ./vue ; amplify publish

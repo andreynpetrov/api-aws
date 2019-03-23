@@ -8,6 +8,17 @@
   </div>
 </template>
 
+<script>
+import { components } from 'aws-amplify-vue'
+
+export default {
+  name: 'app', 
+  components: {
+    ...components
+  }
+}
+</script>
+
 <style lang="scss">
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

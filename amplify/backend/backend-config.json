@@ -10,5 +10,11 @@
 			"service": "S3AndCloudFront",
 			"providerPlugin": "awscloudformation"
 		}
+	},
+	"storage": {
+		"media": {
+			"service": "S3",
+			"providerPlugin": "awscloudformation"
+		}
 	}
 }

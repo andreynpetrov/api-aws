@@ -1,0 +1,13 @@
+{
+    "bucketName": "wiki-20190323183104-media",
+    "authPolicyName": "s3_amplify_8e8d4aee",
+    "unauthPolicyName": "s3_amplify_8e8d4aee",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authPermissions": "rw",
+    "unauthPermissions": ""
+}
