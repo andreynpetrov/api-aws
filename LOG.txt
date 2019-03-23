@@ -1,0 +1,66 @@
+petrov@h:~/repo/smartbrood/api-aws$ amplify init
+Note: It is recommended to run this command from the root of your app directory
+? Enter a name for the project wiki
+? Enter a name for the environment dev
+? Choose your default editor: Visual Studio Code
+? Choose the type of app that you're building javascript
+Please tell us about your project
+? What javascript framework are you using vue
+? Source Directory Path:  src
+? Distribution Directory Path: dist
+? Build Command:  npm run-script build
+? Start Command: npm run-script serve
+Using default provider  awscloudformation
+
+For more information on AWS Profiles, see:
+https://docs.aws.amazon.com/cli/latest/userguide/cli-multiple-profiles.html
+
+? Do you want to use an AWS profile? Yes
+? Please choose the profile you want to use default
+⠸ Initializing project in the cloud...
+
+CREATE_IN_PROGRESS UnauthRole          AWS::IAM::Role             Sat Mar 23 2019 18:17:57 GMT+0300 (GMT+03:00)               
+CREATE_IN_PROGRESS AuthRole            AWS::IAM::Role             Sat Mar 23 2019 18:17:57 GMT+0300 (GMT+03:00)               
+CREATE_IN_PROGRESS DeploymentBucket    AWS::S3::Bucket            Sat Mar 23 2019 18:17:56 GMT+0300 (GMT+03:00)               
+CREATE_IN_PROGRESS wiki-20190323181751 AWS::CloudFormation::Stack Sat Mar 23 2019 18:17:52 GMT+0300 (GMT+03:00) User Initiated
+⠴ Initializing project in the cloud...
+
+CREATE_IN_PROGRESS UnauthRole       AWS::IAM::Role  Sat Mar 23 2019 18:17:58 GMT+0300 (GMT+03:00) Resource creation Initiated
+CREATE_IN_PROGRESS DeploymentBucket AWS::S3::Bucket Sat Mar 23 2019 18:17:58 GMT+0300 (GMT+03:00) Resource creation Initiated
+CREATE_IN_PROGRESS AuthRole         AWS::IAM::Role  Sat Mar 23 2019 18:17:58 GMT+0300 (GMT+03:00) Resource creation Initiated
+⠙ Initializing project in the cloud...
+
+CREATE_COMPLETE UnauthRole AWS::IAM::Role Sat Mar 23 2019 18:18:15 GMT+0300 (GMT+03:00) 
+CREATE_COMPLETE AuthRole   AWS::IAM::Role Sat Mar 23 2019 18:18:15 GMT+0300 (GMT+03:00) 
+⠼ Initializing project in the cloud...
+
+CREATE_COMPLETE wiki-20190323181751 AWS::CloudFormation::Stack Sat Mar 23 2019 18:18:21 GMT+0300 (GMT+03:00) 
+CREATE_COMPLETE DeploymentBucket    AWS::S3::Bucket            Sat Mar 23 2019 18:18:18 GMT+0300 (GMT+03:00) 
+✔ Successfully created initial AWS cloud resources for deployments.
+✔ Initialized provider successfully.
+Initialized your environment successfully.
+
+Your project has been successfully initialized and connected to the cloud!
+
+Some next steps:
+"amplify status" will show you what you've added already and if it's locally configured or deployed
+"amplify <category> add" will allow you to add features like user login or a backend API
+"amplify push" will build all your local backend resources and provision it in the cloud
+"amplify publish" will build all your local backend and frontend resources (if you have hosting category added) and provision it in the cloud
+
+Pro tip:
+Try "amplify add api" to create a backend API and then "amplify publish" to deploy everything
+
+
+#############################################################################################
+
+petrov@h:~/repo/smartbrood/api-aws$ amplify add auth
+Using service: Cognito, provided by: awscloudformation
+ The current configured provider is Amazon Cognito. 
+ Do you want to use the default authentication and security configuration? Yes, use the default configuration.
+Successfully added resource cognito7c430873 locally
+
+Some next steps:
+"amplify push" will build all your local backend resources and provision it in the cloud
+"amplify publish" will build all your local backend and frontend resources (if you have hosting category added) and provision it in the cloud
+

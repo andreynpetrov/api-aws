@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "wiki-20190323181751-authRole",
+            "UnauthRoleArn": "arn:aws:iam::904317604667:role/wiki-20190323181751-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::904317604667:role/wiki-20190323181751-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "wiki-20190323181751-deployment",
+            "UnauthRoleName": "wiki-20190323181751-unauthRole",
+            "StackName": "wiki-20190323181751",
+            "StackId": "arn:aws:cloudformation:eu-west-1:904317604667:stack/wiki-20190323181751/d3855720-4d7e-11e9-8491-02a08d23d630"
+        },
+        "categories": {
+            "auth": {
+                "cognito7c430873": {}
+            }
+        }
+    }
+}
