@@ -22,8 +22,8 @@
 <script>
 import { components } from "aws-amplify-vue";
 import { AmplifyEventBus } from "aws-amplify-vue";
-import { Auth } from "aws-amplify";
-import { Hub } from "@aws-amplify/core";
+import { Auth, Hub } from 'aws-amplify';
+import AmplifyStore from './store/store';
 
 export default {
   name: "app",
@@ -53,6 +53,11 @@ export default {
   },
   async mounted() {
     this.logger = new this.$Amplify.Logger(this.$options.name); 
+  },
+  computed: {
+    user() { 
+      return AmplifyStore.state.user
+    }
   },
   methods: {
     signOut: function(event) {
