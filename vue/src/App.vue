@@ -23,6 +23,7 @@
 import { components } from "aws-amplify-vue";
 import { AmplifyEventBus } from "aws-amplify-vue";
 import { Auth } from "aws-amplify";
+import { Hub } from "@aws-amplify/core";
 
 export default {
   name: "app",
