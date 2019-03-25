@@ -22,13 +22,14 @@
 <script>
 import { components } from "aws-amplify-vue";
 import { AmplifyEventBus } from "aws-amplify-vue";
-import { Auth, Hub } from 'aws-amplify';
-import AmplifyStore from './store/store';
+import { Auth } from "aws-amplify";
+import { mapState } from "vuex";
 
 export default {
   name: "app",
   async beforeCreate() {
     try {
+      // eslint-disable-next-line
       const user = await Auth.currentAuthenticatedUser();
       this.signedIn = true;
     } catch (err) {
@@ -45,21 +46,20 @@ export default {
   data() {
     return {
       signedIn: false,
-      logger: {},
+      logger: {}
     };
   },
   components: {
     ...components
   },
   async mounted() {
-    this.logger = new this.$Amplify.Logger(this.$options.name); 
+    this.logger = new this.$Amplify.Logger(this.$options.name);
   },
   computed: {
-    user() { 
-      return AmplifyStore.state.user
-    }
+    ...mapState({ user: "account/user" })
   },
   methods: {
+    // eslint-disable-next-line
     signOut: function(event) {
       Auth.signOut()
         .then(() => {
