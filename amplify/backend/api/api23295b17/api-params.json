@@ -1,0 +1,35 @@
+{
+    "paths": [
+        {
+            "name": "/items",
+            "lambdaFunction": "wikiff065b13",
+            "privacy": {
+                "private": true,
+                "auth": "rw"
+            }
+        }
+    ],
+    "resourceName": "api23295b17",
+    "apiName": "api23295b17",
+    "functionArns": [
+        {
+            "lambdaFunction": "wikiff065b13"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "wiki-20190323181751-authRole",
+        "unAuthRoleName": "wiki-20190323181751-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "wikiff065b13",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}
