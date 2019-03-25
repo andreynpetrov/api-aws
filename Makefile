@@ -1,4 +1,4 @@
-.PHONY: install run publish
+.PHONY: install ui run publish
 
 install:
 	./setup_11.x.sh
@@ -8,8 +8,11 @@ install:
 	apt-get install -y nodejs yarn
 	yarn global add @vue/cli @aws-amplify/cli
 
+ui:
+	vue ui --host 0.0.0.0
+
 run:
-	vue ui --host 0.0.0.0 
+	yarn run serve
 
 publish:
-	cd ./vue ; amplify publish
+	amplify publish
