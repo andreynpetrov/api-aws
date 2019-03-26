@@ -135,3 +135,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+api.js
