@@ -46,7 +46,7 @@ paths:
       tags:
         - pages
       responses:
-        201:
+        200:
           description: Null response
         500:
           description: Unexpected error
