@@ -22,19 +22,6 @@ paths:
           schema:
             type: integer
             format: int32
-        - name: id
-          in: query
-          description: Id of Page
-          required: false
-          schema:
-            type: integer
-            format: int64
-        - name: slug
-          in: query
-          description: Slug of Page
-          required: false
-          schema:
-            type: string
       responses:
         200:
           description: Expected response to a valid request
@@ -99,14 +86,10 @@ components:
   schemas:
     Page:
       required:
-        - id
-        - title
         - slug
+        - title
         - content
       properties:
-        id:
-          type: integer
-          format: int64
         title:
           type: string
         slug:
