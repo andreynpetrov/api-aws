@@ -10,7 +10,7 @@ const actions = {
     var response = pageService.getPage(state, slug);
     console.log(response);
     commit("getPageSuccess", response);
-/*     pageService
+    /*     pageService
       .getPage(state, slug)
       .then(
         response => commit("getPageSuccess", response),

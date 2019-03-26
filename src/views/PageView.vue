@@ -6,8 +6,8 @@
 
 <script>
 import Page from "@/components/Page.vue";
-import { mapActions } from 'vuex';
-import { mapState } from 'vuex';
+import { mapActions } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "PageView",
@@ -21,17 +21,17 @@ export default {
     msg() {
       return `This is ${this.slug} page`;
     },
-  ...mapState({
-    page: state => state.pages.page
-  })
+    ...mapState({
+      page: state => state.pages.page
+    })
   },
   methods: {
     ...mapActions({
-      getPage: 'pages/getPage'
+      getPage: "pages/getPage"
     })
   },
-mounted: function () {
-  this.getPage(this.slug);
-}
+  mounted: function() {
+    this.getPage(this.slug);
+  }
 };
 </script>
