@@ -12,7 +12,7 @@ paths:
       tags:
         - pages
       summary: List of Pages
-      description: List of Wiki Pages
+      description: List of Pages
       operationId: listPages
       parameters:
         - name: limit
@@ -42,6 +42,7 @@ paths:
                 $ref: "#/components/schemas/Error"
     post:
       summary: Create a Page
+      description: Create new or rewrite existent Page
       operationId: createPage
       tags:
         - pages
@@ -58,6 +59,7 @@ paths:
   /pages/{pageSlug}:
     get:
       summary: Page
+      description: Get one Page by Slug
       operationId: getPage
       tags:
         - pages

@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "./views/Home.vue";
+import HomeView from "./views/HomeView.vue";
 import { components, AmplifyEventBus } from "aws-amplify-vue";
 import * as AmplifyModules from "aws-amplify";
 import { AmplifyPlugin } from "aws-amplify-vue";
@@ -50,11 +50,28 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
-    { path: "/", name: "home", component: Home, meta: { requiresAuth: false } },
+    {
+      path: "/",
+      name: "home",
+      component: HomeView,
+      meta: { requiresAuth: false }
+    },
     {
       path: "/about",
       name: "about",
-      component: () => import("./views/About.vue"),
+      component: () => import("./views/AboutView.vue"),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: "/pages",
+      name: "pages",
+      component: () => import("./views/PagesView.vue"),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: "/page/:slug",
+      name: "page",
+      component: () => import("./views/PageView.vue"),
       meta: { requiresAuth: true }
     },
     {

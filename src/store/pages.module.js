@@ -1,33 +1,33 @@
+import { pageService } from "../services";
+
 const state = {
-  items: {}
+  page: {}
 };
 
 const actions = {
-  refreshItems({ state, dispatch }) {
-    state.items = {};
-    dispatch(`getItems`);
-  },
-  getItems({ state, commit }) {
-    if (state.items.count) {
-      //commit("getItemsSuccess", state.items);
-    } else {
-      commit("getItemsRequest");
-    }
+  getPage({ state, commit }, slug) {
+    commit("getPageRequest");
+    var response = pageService.getPage(state, slug);
+    console.log(response);
+    commit("getPageSuccess", response);
+/*     pageService
+      .getPage(state, slug)
+      .then(
+        response => commit("getPageSuccess", response),
+        error => commit("getPageFailure", error)
+      ); */
   }
 };
 
 const mutations = {
-  getItemsRequest(state) {
-    state.items = { loading: true };
+  getPageRequest(state) {
+    state.page = { loading: true };
   },
-  getItemsSuccess(state, response) {
-    state.items = response;
+  getPageSuccess(state, response) {
+    state.page = response;
   },
-  getItemsFailure(state, error) {
-    state.items = { error };
-  },
-  updateFilter(state, payload) {
-    state.filter = payload;
+  getPageFailure(state, error) {
+    state.page = { error };
   }
 };
 
