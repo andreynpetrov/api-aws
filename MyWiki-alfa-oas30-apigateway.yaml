@@ -1,0 +1,396 @@
+openapi: "3.0.1"
+info:
+  title: "MyWiki"
+  license:
+    name: "MIT"
+  version: "1.0.0"
+servers:
+- url: "https://hmgx6049z7.execute-api.eu-west-1.amazonaws.com/{basePath}"
+  variables:
+    basePath:
+      default: "/alfa"
+paths:
+  /pages/{pageSlug}:
+    get:
+      tags:
+      - "pages"
+      summary: "Page"
+      operationId: "getPage"
+      parameters:
+      - name: "pageSlug"
+        in: "path"
+        description: "The slug of the Page to retrieve"
+        required: true
+        schema:
+          type: "string"
+      - name: "Authorization"
+        in: "header"
+        schema:
+          type: "string"
+      responses:
+        500:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        200:
+          description: "Expected response to a valid request"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+      security:
+      - api_key: []
+      x-amazon-apigateway-request-validator: "Validate query string parameters and\
+        \ headers"
+      x-amazon-apigateway-integration:
+        credentials: "arn:aws:iam::904317604667:role/api-gateway"
+        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/GetItem"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"slug\"\
+                : \"$inputRoot.Item.slug.S\",\n  \"title\": \"$inputRoot.Item.title.S\"\
+                ,\n  \"content\": \"$inputRoot.Item.content.S\"\n}"
+        passthroughBehavior: "when_no_templates"
+        httpMethod: "POST"
+        requestTemplates:
+          application/json: "{\n   \"TableName\": \"Pages\",\n   \"Key\": {\n    \
+            \    \"slug\": {\n            \"S\": \"$input.params('pageSlug')\"\n \
+            \       }\n    }\n}"
+        type: "aws"
+    options:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Page"
+        required: true
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            X-Requested-With:
+              schema:
+                type: "string"
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        type: "mock"
+  /pages:
+    get:
+      tags:
+      - "pages"
+      summary: "List of Pages"
+      description: "List of Wiki Pages"
+      operationId: "listPages"
+      parameters:
+      - name: "limit"
+        in: "query"
+        description: "How many items to return at one time"
+        schema:
+          type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pages"
+        required: true
+      responses:
+        500:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        200:
+          description: "Expected response to a valid request"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            x-next:
+              description: "A link to the next page of responses"
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pages"
+      security:
+      - api_key: []
+      x-amazon-apigateway-request-validator: "Validate query string parameters and\
+        \ headers"
+      x-amazon-apigateway-integration:
+        credentials: "arn:aws:iam::904317604667:role/api-gateway"
+        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/Scan"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: "#set($inputRoot = $input.path('$'))\n{\n    \"Pages\"\
+                : [\n        #foreach($elem in $inputRoot.Items) {\n            \"\
+                slug\": \"$elem.slug.S\",\n            \"title\": \"$elem.title.S\"\
+                ,\n            \"content\": \"$elem.content.S\",\n        }#if($foreach.hasNext),#end\n\
+                \t#end\n    ]\n}"
+        passthroughBehavior: "when_no_templates"
+        httpMethod: "POST"
+        requestTemplates:
+          application/json: "{\n   \"TableName\": \"Pages\",\n   \"ReturnConsumedCapacity\"\
+            : \"TOTAL\"\n}"
+        type: "aws"
+    post:
+      tags:
+      - "pages"
+      summary: "Create a Page"
+      operationId: "createPage"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Page"
+        required: true
+      responses:
+        500:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content: {}
+      security:
+      - api_key: []
+      x-amazon-apigateway-request-validator: "Validate query string parameters and\
+        \ headers"
+      x-amazon-apigateway-integration:
+        credentials: "arn:aws:iam::904317604667:role/api-gateway"
+        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/PutItem"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        httpMethod: "POST"
+        requestTemplates:
+          application/json: "{\n   \"TableName\": \"Pages\",\n   \"Item\": {\n   \
+            \    \"slug\": { \"S\": $input.json('$.slug') },\n       \"title\": {\
+            \ \"S\": $input.json('$.title') },\n       \"content\": { \"S\": $input.json('$.content')\
+            \ }\n   }\n}      "
+        type: "aws"
+    options:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pages"
+        required: true
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            X-Requested-With:
+              schema:
+                type: "string"
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pages"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        type: "mock"
+components:
+  schemas:
+    Pages:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/Page"
+    Error:
+      required:
+      - "code"
+      - "message"
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    Page:
+      required:
+      - "content"
+      - "slug"
+      - "title"
+      type: "object"
+      properties:
+        title:
+          type: "string"
+        slug:
+          type: "string"
+        content:
+          type: "string"
+  securitySchemes:
+    api_key:
+      type: "apiKey"
+      name: "x-api-key"
+      in: "header"
+x-amazon-apigateway-documentation:
+  version: "1.0.0"
+  createdDate: "2019-03-27T17:29:07Z"
+  documentationParts:
+  - location:
+      type: "API"
+    properties:
+      info:
+        license:
+          name: "MIT"
+  - location:
+      type: "METHOD"
+      path: "/pages/{pageSlug}"
+      method: "GET"
+    properties:
+      tags:
+      - "pages"
+      summary: "Page"
+  - location:
+      type: "METHOD"
+      path: "/pages"
+      method: "GET"
+    properties:
+      tags:
+      - "pages"
+      summary: "List of Pages"
+      description: "List of Wiki Pages"
+  - location:
+      type: "METHOD"
+      path: "/pages"
+      method: "POST"
+    properties:
+      tags:
+      - "pages"
+      summary: "Create a Page"
+  - location:
+      type: "PATH_PARAMETER"
+      path: "/pages/{pageSlug}"
+      method: "GET"
+      name: "pageSlug"
+    properties:
+      description: "The slug of the Page to retrieve"
+  - location:
+      type: "QUERY_PARAMETER"
+      path: "/pages"
+      method: "GET"
+      name: "limit"
+    properties:
+      description: "How many items to return at one time"
+  - location:
+      type: "RESPONSE"
+      path: "/pages/{pageSlug}"
+      method: "GET"
+      statusCode: "200"
+    properties:
+      description: "Expected response to a valid request"
+  - location:
+      type: "RESPONSE"
+      path: "/pages/{pageSlug}"
+      method: "GET"
+      statusCode: "500"
+    properties:
+      description: "Unexpected error"
+  - location:
+      type: "RESPONSE"
+      path: "/pages"
+      method: "GET"
+      statusCode: "200"
+    properties:
+      description: "Expected response to a valid request"
+  - location:
+      type: "RESPONSE"
+      path: "/pages"
+      method: "GET"
+      statusCode: "500"
+    properties:
+      description: "Unexpected error"
+  - location:
+      type: "RESPONSE"
+      path: "/pages"
+      method: "POST"
+      statusCode: "201"
+    properties:
+      description: "Null response"
+  - location:
+      type: "RESPONSE"
+      path: "/pages"
+      method: "POST"
+      statusCode: "500"
+    properties:
+      description: "Unexpected error"
+  - location:
+      type: "RESPONSE_HEADER"
+      path: "/pages"
+      method: "GET"
+      statusCode: "200"
+      name: "x-next"
+    properties:
+      description: "A link to the next page of responses"
+x-amazon-apigateway-request-validators:
+  Validate query string parameters and headers:
+    validateRequestParameters: true
+    validateRequestBody: false
