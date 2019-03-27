@@ -1,0 +1,206 @@
+openapi: "3.0.1"
+info:
+  title: "MyWiki"
+  license:
+    name: "MIT"
+  version: "1.0.0"
+servers:
+- url: "https://hmgx6049z7.execute-api.eu-west-1.amazonaws.com/{basePath}"
+  variables:
+    basePath:
+      default: "/alfa"
+paths:
+  /pages/{pageSlug}:
+    get:
+      tags:
+      - "pages"
+      summary: "Page"
+      operationId: "getPage"
+      parameters:
+      - name: "pageSlug"
+        in: "path"
+        description: "The slug of the Page to retrieve"
+        required: true
+        schema:
+          type: "string"
+      - name: "Authorization"
+        in: "header"
+        schema:
+          type: "string"
+      responses:
+        500:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        200:
+          description: "Expected response to a valid request"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+      security:
+      - api_key: []
+    options:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Page"
+        required: true
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            X-Requested-With:
+              schema:
+                type: "string"
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Page"
+  /pages:
+    get:
+      tags:
+      - "pages"
+      summary: "List of Pages"
+      description: "List of Wiki Pages"
+      operationId: "listPages"
+      parameters:
+      - name: "limit"
+        in: "query"
+        description: "How many items to return at one time"
+        schema:
+          type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pages"
+        required: true
+      responses:
+        500:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        200:
+          description: "Expected response to a valid request"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            x-next:
+              description: "A link to the next page of responses"
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pages"
+      security:
+      - api_key: []
+    post:
+      tags:
+      - "pages"
+      summary: "Create a Page"
+      operationId: "createPage"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Page"
+        required: true
+      responses:
+        500:
+          description: "Unexpected error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content: {}
+      security:
+      - api_key: []
+    options:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pages"
+        required: true
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            X-Requested-With:
+              schema:
+                type: "string"
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pages"
+components:
+  schemas:
+    Pages:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/Page"
+    Error:
+      required:
+      - "code"
+      - "message"
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int32"
+        message:
+          type: "string"
+    Page:
+      required:
+      - "content"
+      - "slug"
+      - "title"
+      type: "object"
+      properties:
+        title:
+          type: "string"
+        slug:
+          type: "string"
+        content:
+          type: "string"
+  securitySchemes:
+    api_key:
+      type: "apiKey"
+      name: "x-api-key"
+      in: "header"
