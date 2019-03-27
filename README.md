@@ -1,6 +1,11 @@
 #api-aws
 Sandbox for AWS API Gateway tests
 
+
+## CORS
+* https://enable-cors.org/server_awsapigateway.html
+
+
 ##Links
 * https://github.com/aws-samples/aws-amplify-vue
 * https://github.com/aws-samples/aws-amplify-auth-starters/tree/vue

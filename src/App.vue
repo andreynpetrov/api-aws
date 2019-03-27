@@ -2,16 +2,23 @@
   <div id="app">
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand :to="{ name: 'home' }">Wiki</b-navbar-brand>
-      <b-navbar-toggle target="nav_collapse"/>
+      <b-navbar-toggle target="nav_collapse" />
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
           <b-nav-item :to="{ name: 'about' }">About</b-nav-item>
-          <b-nav-item :to="{ name: 'page', params: { slug: 'aws' } }">AWS</b-nav-item>
-          <b-nav-item v-if="this.signedIn" :to="{ name: 'auth' }" @click="signOut">SignOut</b-nav-item>
+          <b-nav-item :to="{ name: 'page', params: { slug: 'aws' } }"
+            >AWS</b-nav-item
+          >
+          <b-nav-item
+            v-if="this.signedIn"
+            :to="{ name: 'auth' }"
+            @click="signOut"
+            >SignOut</b-nav-item
+          >
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
