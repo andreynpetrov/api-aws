@@ -1,6 +1,6 @@
 <template>
   <div class="PageItem">
-    <p>Index: "{{ index }}" Title: "{{ page.title }}"</p>
+    <b-link :to="{ name: 'page', params: { slug: page.slug } }">{{ page.title }}</b-link>
   </div>
 </template>
 

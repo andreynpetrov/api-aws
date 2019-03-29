@@ -5,11 +5,7 @@
       <b-navbar-toggle target="nav_collapse" />
       <b-collapse is-nav id="nav_collapse">
         <b-navbar-nav>
-          <b-nav-item :to="{ name: 'about' }">About</b-nav-item>
           <b-nav-item :to="{ name: 'pages' }">Pages</b-nav-item>          
-          <b-nav-item :to="{ name: 'page', params: { slug: 'aws' } }"
-            >AWS</b-nav-item
-          >
           <b-nav-item
             v-if="this.signedIn"
             :to="{ name: 'auth' }"
