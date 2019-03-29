@@ -15,12 +15,6 @@ export default {
     Page
   },
   computed: {
-    slug() {
-      return this.$route.params.slug;
-    },
-    msg() {
-      return `This is ${this.slug} page`;
-    },
     ...mapState({
       page: state => state.pages.page
     })
@@ -31,7 +25,7 @@ export default {
     })
   },
   mounted: function() {
-    this.getPage(this.slug);
+    this.getPage(this.$route.params.slug);
   }
 };
 </script>

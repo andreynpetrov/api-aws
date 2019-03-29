@@ -160,11 +160,10 @@ paths:
             responseParameters:
               method.response.header.Access-Control-Allow-Origin: "'*'"
             responseTemplates:
-              application/json: "#set($inputRoot = $input.path('$'))\n{\n    \"Pages\"\
-                : [\n        #foreach($elem in $inputRoot.Items) {\n            \"\
-                slug\": \"$elem.slug.S\",\n            \"title\": \"$elem.title.S\"\
-                ,\n            \"content\": \"$elem.content.S\",\n        }#if($foreach.hasNext),#end\n\
-                \t#end\n    ]\n}"
+              application/json: "#set($inputRoot = $input.path('$'))\n[\n#foreach($elem\
+                \ in $inputRoot.Items)\n {\n  \"title\" : \"$elem.title.S\",\n  \"\
+                slug\" : \"$elem.slug.S\",\n  \"content\" : \"$elem.content.S\"\n\
+                } \n#if($foreach.hasNext),#end\n#end\n]"
         passthroughBehavior: "when_no_templates"
         httpMethod: "POST"
         requestTemplates:

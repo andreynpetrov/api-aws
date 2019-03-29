@@ -1,7 +1,8 @@
 import { pageService } from "../services";
 
 const state = {
-  page: {}
+  page: {},
+  pageList: {}
 };
 
 const actions = {
@@ -12,6 +13,15 @@ const actions = {
       .then(
         response => commit("getPageSuccess", response),
         error => commit("getPageFailure", error)
+      );
+  },
+  getPageList({ state, commit }) {
+    commit("getPageListRequest");
+    pageService
+      .getPageList(state)
+      .then(
+        response => commit("getPageListSuccess", response),
+        error => commit("getPageListFailure", error)
       );
   }
 };
@@ -25,6 +35,15 @@ const mutations = {
   },
   getPageFailure(state, error) {
     state.page = { error };
+  },
+  getPageListRequest(state) {
+    state.pageList = { loading: true };
+  },
+  getPageListSuccess(state, response) {
+    state.pageList = { loading: false, Pages: response };
+  },
+  getPageListFailure(state, error) {
+    state.pageList = { error };
   }
 };
 

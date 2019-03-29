@@ -2,7 +2,8 @@ import config from "config";
 import apigClientFactory from "aws-api-gateway-client";
 
 export const pageService = {
-  getPage
+  getPage,
+  getPageList
 };
 
 /* const config = {
@@ -18,13 +19,22 @@ function getPage(state, slug) {
     pageSlug: slug
   };
   const pathTemplate = "/pages/{pageSlug}";
-  const method = "GET";
 
   return apigClient
-    .invokeApi(pathParams, pathTemplate, method)
+    .invokeApi(pathParams, pathTemplate, "GET")
+    .then(handleResponse);
+}
+
+function getPageList(state) {
+  const pathParams = {};
+  const pathTemplate = "/pages";
+
+  return apigClient
+    .invokeApi(pathParams, pathTemplate, "GET")
     .then(handleResponse);
 }
 
 function handleResponse(response) {
+  console.log(response.data);
   return response.data;
 }
