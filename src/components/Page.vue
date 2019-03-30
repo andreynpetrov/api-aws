@@ -67,11 +67,12 @@ export default {
       this.edit = false;
     },
     submitEdit: function(event) {
-      this.updatePage(this.localPage)
+      event.preventDefault()
+      this.createPage(this.localPage)
       this.edit = false;
     },
     ...mapActions({
-      updatePage: "pages/updatePage"
+      createPage: "pages/createPage"
     })
   },
   computed: {

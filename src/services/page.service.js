@@ -2,17 +2,23 @@ import config from "config";
 import apigClientFactory from "aws-api-gateway-client";
 
 export const pageService = {
+  createPage,
   getPage,
   getPageList
 };
 
-/* const config = {
-  invokeUrl: "https://hmgx6049z7.execute-api.eu-west-1.amazonaws.com/alfa",
-  apiKey: "sB5m0yr2QX2Jw5yO6TKkKgqTSCTygHS4y8WGxUq1",
-  region: "eu-west-1"
-}; */
-
 var apigClient = apigClientFactory.newClient(config);
+
+function createPage(state, page) {
+  const pathParams = {};
+  const pathTemplate = "/pages";
+  const additionalParams = {};
+  const body = page;
+
+  return apigClient
+    .invokeApi(pathParams, pathTemplate, "POST", additionalParams, body)
+    .then(handleResponse);
+}
 
 function getPage(state, slug) {
   const pathParams = {

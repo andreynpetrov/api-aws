@@ -15,15 +15,14 @@ const actions = {
         error => commit("getPageFailure", error)
       );
   },
-  updatePage({ state, commit }, page) {
-    commit("updatePageSuccess", page)
-/*     commit("updatePageRequest");
+  createPage({ state, commit }, page) {
+    commit("createPageRequest");
     pageService
-      .updatePage(state, page)
+      .createPage(state, page)
       .then(
-        response => commit("updatePageSuccess", response),
-        error => commit("updatePageFailure", error)
-      ); */
+        response => commit("createPageSuccess", page),
+        error => commit("createPageFailure", error)
+      );
   },
   getPageList({ state, commit }) {
     commit("getPageListRequest");
@@ -46,13 +45,13 @@ const mutations = {
   getPageFailure(state, error) {
     state.page = { error };
   },
-  updatePageRequest(state) {
-    state.page = { updating: true };
+  createPageRequest(state) {
+    state.page = { loading: true };
   },
-  updatePageSuccess(state, response) {
-    state.page = response;
+  createPageSuccess(state, page) {
+    state.page = page;
   },
-  updatePageFailure(state, error) {
+  createPageFailure(state, error) {
     state.page = { error };
   },
   getPageListRequest(state) {
