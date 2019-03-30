@@ -15,6 +15,16 @@ const actions = {
         error => commit("getPageFailure", error)
       );
   },
+  updatePage({ state, commit }, page) {
+    commit("updatePageSuccess", page)
+/*     commit("updatePageRequest");
+    pageService
+      .updatePage(state, page)
+      .then(
+        response => commit("updatePageSuccess", response),
+        error => commit("updatePageFailure", error)
+      ); */
+  },
   getPageList({ state, commit }) {
     commit("getPageListRequest");
     pageService
@@ -34,6 +44,15 @@ const mutations = {
     state.page = response;
   },
   getPageFailure(state, error) {
+    state.page = { error };
+  },
+  updatePageRequest(state) {
+    state.page = { updating: true };
+  },
+  updatePageSuccess(state, response) {
+    state.page = response;
+  },
+  updatePageFailure(state, error) {
     state.page = { error };
   },
   getPageListRequest(state) {
