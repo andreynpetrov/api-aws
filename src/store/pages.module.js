@@ -24,6 +24,15 @@ const actions = {
         error => commit("createPageFailure", error)
       );
   },
+  deletePage({ state, commit }, slug) {
+    commit("deletePageRequest");
+    pageService
+      .deletePage(state, slug)
+      .then(
+        response => commit("deletePageSuccess"),
+        error => commit("deletePageFailure", error)
+      );
+  },
   getPageList({ state, commit }) {
     commit("getPageListRequest");
     pageService
@@ -52,6 +61,15 @@ const mutations = {
     state.page = page;
   },
   createPageFailure(state, error) {
+    state.page = { error };
+  },
+  deletePageRequest(state) {
+    state.page = { loading: true };
+  },
+  deletePageSuccess(state) {
+    state.page = {};
+  },
+  deletePageFailure(state, error) {
     state.page = { error };
   },
   getPageListRequest(state) {

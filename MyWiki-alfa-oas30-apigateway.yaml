@@ -67,6 +67,46 @@ paths:
             \    \"slug\": {\n            \"S\": \"$input.params('pageSlug')\"\n \
             \       }\n    }\n}"
         type: "aws"
+    delete:
+      parameters:
+      - name: "pageSlug"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        500:
+          description: "500 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content: {}
+      security:
+      - api_key: []
+      x-amazon-apigateway-request-validator: "Validate query string parameters and\
+        \ headers"
+      x-amazon-apigateway-integration:
+        credentials: "arn:aws:iam::904317604667:role/api-gateway"
+        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/DeleteItem"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        httpMethod: "POST"
+        requestTemplates:
+          application/json: "{\n   \"TableName\": \"Pages\",\n   \"Key\": {\n    \
+            \    \"slug\": {\n            \"S\": \"$input.params('pageSlug')\"\n \
+            \       }\n    }\n}"
+        type: "aws"
     options:
       requestBody:
         content:
@@ -99,7 +139,7 @@ paths:
           default:
             statusCode: "200"
             responseParameters:
-              method.response.header.Access-Control-Allow-Methods: "'POST,GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Methods: "'POST,GET,DELETE,OPTIONS'"
               method.response.header.X-Requested-With: "'*'"
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
@@ -197,8 +237,8 @@ paths:
           content: {}
       security:
       - api_key: []
-      x-amazon-apigateway-request-validator: "Validate query string parameters and\
-        \ headers"
+      x-amazon-apigateway-request-validator: "Validate body, query string parameters,\
+        \ and headers"
       x-amazon-apigateway-integration:
         credentials: "arn:aws:iam::904317604667:role/api-gateway"
         uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/PutItem"
@@ -393,3 +433,6 @@ x-amazon-apigateway-request-validators:
   Validate query string parameters and headers:
     validateRequestParameters: true
     validateRequestBody: false
+  Validate body, query string parameters, and headers:
+    validateRequestParameters: true
+    validateRequestBody: true

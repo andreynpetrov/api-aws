@@ -35,6 +35,12 @@
       <h1>{{ page.title }}</h1>
       <div v-html="htmlContent"></div>
       <b-button v-on:click="enableEdit" variant="outline-primary" size="sm">Edit</b-button>
+      <b-button v-b-modal.modal-1 variant="outline-danger" size="sm">Delete</b-button>
+
+      <!-- Modal Component -->
+      <b-modal id="modal-1" v-on:ok="submitDelete">
+      <p class="my-4">Delete page?</p>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -58,11 +64,6 @@ export default {
       }
     };
   },
-/*   watch: {
-    page(value) {
-      this.formPage = value
-    }
-  }, */
   methods: {
     enableEdit: function(event) {
       this.edit = true;
@@ -77,8 +78,14 @@ export default {
       this.createPage(this.form)
       this.edit = false;
     },
+    submitDelete: function(event) {
+      console.log("sumbitDelete");
+      this.deletePage(this.page.slug);
+      this.$router.push({ name: 'pages' })
+    },
     ...mapActions({
-      createPage: "pages/createPage"
+      createPage: "pages/createPage",
+      deletePage: "pages/deletePage"
     })
   },
   computed: {

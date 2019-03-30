@@ -3,6 +3,7 @@ import apigClientFactory from "aws-api-gateway-client";
 
 export const pageService = {
   createPage,
+  deletePage,
   getPage,
   getPageList
 };
@@ -17,6 +18,17 @@ function createPage(state, page) {
 
   return apigClient
     .invokeApi(pathParams, pathTemplate, "POST", additionalParams, body)
+    .then(handleResponse);
+}
+
+function deletePage(state, slug) {
+  const pathParams = {
+    pageSlug: slug
+  };
+  const pathTemplate = "/pages/{pageSlug}";
+
+  return apigClient
+    .invokeApi(pathParams, pathTemplate, "DELETE")
     .then(handleResponse);
 }
 

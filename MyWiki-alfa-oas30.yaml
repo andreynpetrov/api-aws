@@ -46,6 +46,29 @@ paths:
                 $ref: "#/components/schemas/Page"
       security:
       - api_key: []
+    delete:
+      parameters:
+      - name: "pageSlug"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        500:
+          description: "500 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content: {}
+      security:
+      - api_key: []
     options:
       requestBody:
         content:
