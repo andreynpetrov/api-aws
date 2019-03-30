@@ -1,6 +1,18 @@
 <template>
   <div class="page">
-    <b-form @submit="submitEdit" @reset="cancelEdit" v-if="edit">
+    <b-form @submit="submitEdit" @reset="cancelEdit">
+      <b-form-group
+      id="input-group-1" 
+      label="Slug" 
+      label-for="slug">
+        <b-form-input
+          id="slug"
+          v-model.lazy="form.slug"
+          required
+          placeholder="Enter page slug"
+        ></b-form-input>
+      </b-form-group>
+
       <b-form-group 
       id="input-group-1" 
       label="Title" 
@@ -31,64 +43,32 @@
       <b-button type="submit" variant="outline-primary" size="sm">Submit</b-button>
       <b-button type="reset" variant="outline-secondary" size="sm">Cancel</b-button>
     </b-form>
-    <div v-else>
-      <h1>{{ page.title }}</h1>
-      <div v-html="htmlContent"></div>
-      <b-button v-on:click="enableEdit" variant="outline-primary" size="sm">Edit</b-button>
-    </div>
   </div>
 </template>
 
 <script>
-import * as marked from "marked";
 import { mapActions } from "vuex";
 
 export default {
-  name: "Page",
-  props: {
-    page: Object
-  },
+  name: "CreatePage",
   data: function() {
     return {
-      edit: false,
-      form: {
-        slug: this.page.slug,
-        title: this.page.title,
-        content: this.page.content
-      }
+      form: {},
     };
   },
-/*   watch: {
-    page(value) {
-      this.formPage = value
-    }
-  }, */
   methods: {
-    enableEdit: function(event) {
-      this.edit = true;
-    },
     cancelEdit: function(event) {
-      this.edit = false;
-      this.form.title = this.page.title;
-      this.form.content = this.page.content;
+      event.preventDefault()
+      this.$router.go(-1)
     },
     submitEdit: function(event) {
       event.preventDefault()
       this.createPage(this.form)
-      this.edit = false;
+      this.$router.push({ name: 'page', params: { slug: this.form.slug }})
     },
     ...mapActions({
       createPage: "pages/createPage"
     })
-  },
-  computed: {
-    htmlContent: function() {
-      if (this.page.content) {
-        return marked(this.page.content, { sanitize: true });
-      } else {
-        return "Loaded...";
-      }
-    }
   }
 };
 </script>

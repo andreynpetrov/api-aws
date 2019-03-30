@@ -1,5 +1,6 @@
 <template>
   <div class="PageView">
+    <b-button v-on:click="createPage" variant="outline-primary" size="sm">New</b-button>
     <div v-if="pageList.loading">Loading</div>
     <PageItem v-else v-for="(item, index) in pageList.Pages" 
        v-bind:index="index"
@@ -27,7 +28,10 @@ export default {
   methods: {
     ...mapActions({
       getPageList: "pages/getPageList"
-    })
+    }),
+    createPage: function() {
+      this.$router.push({ name: 'createPage' })
+    }
   },
   mounted: function() {
     this.getPageList();

@@ -69,6 +69,12 @@ const router = new VueRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: "/page/create",
+      name: "createPage",
+      component: () => import("./views/CreatePageView.vue"),
+      meta: { requiresAuth: true }
+    },
+    {
       path: "/page/:slug",
       name: "page",
       component: () => import("./views/PageView.vue"),

@@ -1,6 +1,6 @@
 <template>
   <div class="pageview">
-    <Page :page="page" />
+    <Page :page="page" v-if="page.loading == undefined"/>
   </div>
 </template>
 
