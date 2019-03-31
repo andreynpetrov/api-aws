@@ -1,46 +1,47 @@
 <template>
   <div class="page">
-    <b-form @submit="submitEdit" @reset="cancelEdit" v-if="edit">
-      <b-form-group 
-      id="input-group-1" 
-      label="Title" 
-      label-for="title">
-        <b-form-input
-          id="title"
-          v-model.lazy="form.title"
-          required
-          placeholder="Enter page title"
-        ></b-form-input>
-      </b-form-group>
+    <v-form
+    ref="form"
+    v-model="valid"
+    lazy-validation
+    v-if="edit"
+    >
+    <v-text-field
+      v-model="form.title"
+      label="Title"
+      required
+    ></v-text-field>
 
-      <b-form-group
-        id="input-group-2"
+    <v-textarea
+      v-model="form.content"
         label="Content"
-        label-for="content"
-        description="Wiki page content in Markdown markup."
-      >
-        <b-form-textarea
-          v-model.lazy="form.content"
-          id="content"
-          required
-          placeholder="Enter page content"
-          rows="3"
-          max-rows="6"
-        ></b-form-textarea>
-      </b-form-group>
-      <b-button type="submit" variant="outline-primary" size="sm">Submit</b-button>
-      <b-button type="reset" variant="outline-secondary" size="sm">Cancel</b-button>
-    </b-form>
+        placeholder="Enter page content in mardown markup."
+        auto-grow="true"
+        full-width
+        single-line
+        required
+    ></v-textarea>
+
+    <v-btn
+      color="success"
+      @click="submitEdit"
+    >
+      Submit
+    </v-btn>
+
+    <v-btn
+      color="error"
+      @click="cancelEdit"
+    >
+      Cancel
+    </v-btn>
+
+  </v-form>
     <div v-else>
       <h1>{{ page.title }}</h1>
       <div v-html="htmlContent"></div>
-      <b-button v-on:click="enableEdit" variant="outline-primary" size="sm">Edit</b-button>
-      <b-button v-b-modal.modal-1 variant="outline-danger" size="sm">Delete</b-button>
-
-      <!-- Modal Component -->
-      <b-modal id="modal-1" v-on:ok="submitDelete">
-      <p class="my-4">Delete page?</p>
-      </b-modal>
+      <v-btn v-on:click="enableEdit">Edit</v-btn>
+      <v-btn v-on:ok="submitDelete">Delete</v-btn>
     </div>
   </div>
 </template>
@@ -56,6 +57,7 @@ export default {
   },
   data: function() {
     return {
+      valid: true,
       edit: false,
       form: {
         slug: this.page.slug,
@@ -74,14 +76,14 @@ export default {
       this.form.content = this.page.content;
     },
     submitEdit: function(event) {
-      event.preventDefault()
-      this.createPage(this.form)
+      event.preventDefault();
+      this.createPage(this.form);
       this.edit = false;
     },
     submitDelete: function(event) {
       console.log("sumbitDelete");
       this.deletePage(this.page.slug);
-      this.$router.push({ name: 'pages' })
+      this.$router.push({ name: "pages" });
     },
     ...mapActions({
       createPage: "pages/createPage",

@@ -1,6 +1,6 @@
 <template>
   <div class="createpageview">
-    <CreatePage/>
+    <CreatePage />
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 import config from "config";
 import apigClientFactory from "aws-api-gateway-client";
-import { Auth } from 'aws-amplify';
+import { Auth } from "aws-amplify";
 
 export const pageService = {
   createPage,
@@ -18,12 +18,14 @@ function getPage(state, slug) {
         pathParams: { pageSlug: slug },
         pathTemplate: "/pages/{pageSlug}",
         method: "GET",
-        additionalParams: { headers: { Authorization: session.idToken.jwtToken } },
+        additionalParams: {
+          headers: { Authorization: session.idToken.jwtToken }
+        },
         body: {}
-      }
+      };
     })
     .then(callAPI)
-    .catch(err => console.log('error happened', err));
+    .catch(err => console.log("error happened", err));
 }
 
 function getPageList(state) {
@@ -33,12 +35,14 @@ function getPageList(state) {
         pathParams: {},
         pathTemplate: "/pages",
         method: "GET",
-        additionalParams: { headers: { Authorization: session.idToken.jwtToken } },
+        additionalParams: {
+          headers: { Authorization: session.idToken.jwtToken }
+        },
         body: {}
-      }
+      };
     })
     .then(callAPI)
-    .catch(err => console.log('error happened', err));
+    .catch(err => console.log("error happened", err));
 }
 
 function createPage(state, page) {
@@ -48,12 +52,14 @@ function createPage(state, page) {
         pathParams: {},
         pathTemplate: "/pages",
         method: "POST",
-        additionalParams: { headers: { Authorization: session.idToken.jwtToken } },
+        additionalParams: {
+          headers: { Authorization: session.idToken.jwtToken }
+        },
         body: page
-      }
+      };
     })
     .then(callAPI)
-    .catch(err => console.log('error happened', err));
+    .catch(err => console.log("error happened", err));
 }
 
 function deletePage(state, slug) {
@@ -63,20 +69,28 @@ function deletePage(state, slug) {
         pathParams: { pageSlug: slug },
         pathTemplate: "/pages/{pageSlug}",
         method: "DELETE",
-        additionalParams: { headers: { Authorization: session.idToken.jwtToken } },
+        additionalParams: {
+          headers: { Authorization: session.idToken.jwtToken }
+        },
         body: {}
-      }
+      };
     })
     .then(callAPI)
-    .catch(err => console.log('error happened', err));
+    .catch(err => console.log("error happened", err));
 }
 
 function callAPI(r) {
   //console.log(r);
   return apigClient
-    .invokeApi(r.pathParams, r.pathTemplate, r.method, r.additionalParams, r.body)
+    .invokeApi(
+      r.pathParams,
+      r.pathTemplate,
+      r.method,
+      r.additionalParams,
+      r.body
+    )
     .then(handleResponse)
-    .catch(err => console.log('error happened', err));
+    .catch(err => console.log("error happened", err));
 }
 
 function handleResponse(response) {

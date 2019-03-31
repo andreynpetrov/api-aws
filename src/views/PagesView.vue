@@ -1,12 +1,24 @@
 <template>
   <div class="PageView">
-    <b-button v-on:click="createPage" variant="outline-primary" size="sm">New</b-button>
-    <div v-if="pageList.loading">Loading</div>
-    <PageItem v-else v-for="(item, index) in pageList.Pages" 
-       v-bind:index="index"
-       v-bind:page="item"
-    ></PageItem>
+    <v-btn
+      fab
+      bottom
+      right
+      color="pink"
+      dark
+      fixed
+      @click="createPage"
+    >
+      <v-icon>add</v-icon>
+    </v-btn>
 
+    <div v-if="pageList.loading">Loading</div>
+    <PageItem
+      v-else
+      v-for="(item, index) in pageList.Pages"
+      v-bind:index="index"
+      v-bind:page="item"
+    ></PageItem>
   </div>
 </template>
 
@@ -30,7 +42,7 @@ export default {
       getPageList: "pages/getPageList"
     }),
     createPage: function() {
-      this.$router.push({ name: 'createPage' })
+      this.$router.push({ name: "createPage" });
     }
   },
   mounted: function() {

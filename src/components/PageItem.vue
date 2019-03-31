@@ -1,6 +1,6 @@
 <template>
   <div class="PageItem">
-    <b-link :to="{ name: 'page', params: { slug: page.slug } }">{{ page.title }}</b-link>
+    <v-btn flat small :to="{ name: 'page', params: { slug: page.slug } }">{{ page.title }}</v-btn>
   </div>
 </template>
 
