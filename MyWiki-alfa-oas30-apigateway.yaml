@@ -45,6 +45,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Page"
       security:
+      - CognitoAmplify: []
       - api_key: []
       x-amazon-apigateway-request-validator: "Validate query string parameters and\
         \ headers"
@@ -65,7 +66,8 @@ paths:
         requestTemplates:
           application/json: "{\n   \"TableName\": \"Pages\",\n   \"Key\": {\n    \
             \    \"slug\": {\n            \"S\": \"$input.params('pageSlug')\"\n \
-            \       }\n    }\n}"
+            \       },\n        \"cognitosub\": { \"S\": \"$context.authorizer.claims['sub']\"\
+            \ }\n    }\n}"
         type: "aws"
     delete:
       parameters:
@@ -89,6 +91,7 @@ paths:
                 type: "string"
           content: {}
       security:
+      - CognitoAmplify: []
       - api_key: []
       x-amazon-apigateway-request-validator: "Validate query string parameters and\
         \ headers"
@@ -105,7 +108,8 @@ paths:
         requestTemplates:
           application/json: "{\n   \"TableName\": \"Pages\",\n   \"Key\": {\n    \
             \    \"slug\": {\n            \"S\": \"$input.params('pageSlug')\"\n \
-            \       }\n    }\n}"
+            \       },\n        \"cognitosub\": { \"S\": \"$context.authorizer.claims['sub']\"\
+            \ }\n    }\n}"
         type: "aws"
     options:
       requestBody:
@@ -188,12 +192,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/Pages"
       security:
+      - CognitoAmplify: []
       - api_key: []
       x-amazon-apigateway-request-validator: "Validate query string parameters and\
         \ headers"
       x-amazon-apigateway-integration:
         credentials: "arn:aws:iam::904317604667:role/api-gateway"
-        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/Scan"
+        uri: "arn:aws:apigateway:eu-west-1:dynamodb:action/Query"
         responses:
           default:
             statusCode: "200"
@@ -207,8 +212,10 @@ paths:
         passthroughBehavior: "when_no_templates"
         httpMethod: "POST"
         requestTemplates:
-          application/json: "{\n   \"TableName\": \"Pages\",\n   \"ReturnConsumedCapacity\"\
-            : \"TOTAL\"\n}"
+          application/json: "{\n   \"TableName\": \"Pages\",\n   \"KeyConditionExpression\"\
+            : \"cognitosub = :subvalue\",\n   \"ExpressionAttributeValues\": { \n\
+            \      \":subvalue\" : { \n         \"S\": \"$context.authorizer.claims['sub']\"\
+            \n      }\n   }\n}"
         type: "aws"
     post:
       tags:
@@ -236,7 +243,7 @@ paths:
                 type: "string"
           content: {}
       security:
-      - api_key: []
+      - CognitoAmplify: []
       x-amazon-apigateway-request-validator: "Validate body, query string parameters,\
         \ and headers"
       x-amazon-apigateway-integration:
@@ -253,7 +260,9 @@ paths:
           application/json: "{\n   \"TableName\": \"Pages\",\n   \"Item\": {\n   \
             \    \"slug\": { \"S\": $input.json('$.slug') },\n       \"title\": {\
             \ \"S\": $input.json('$.title') },\n       \"content\": { \"S\": $input.json('$.content')\
-            \ }\n   }\n}      "
+            \ },\n       \"updated\": { \"N\": \"$context.requestTimeEpoch\" },\n\
+            \        \"cognitosub\": { \"S\": \"$context.authorizer.claims['sub']\"\
+            \ }      \n   }\n}      "
         type: "aws"
     options:
       requestBody:
@@ -326,6 +335,15 @@ components:
         content:
           type: "string"
   securitySchemes:
+    CognitoAmplify:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "cognito_user_pools"
+      x-amazon-apigateway-authorizer:
+        providerARNs:
+        - "arn:aws:cognito-idp:eu-west-1:904317604667:userpool/eu-west-1_8julBivj2"
+        type: "cognito_user_pools"
     api_key:
       type: "apiKey"
       name: "x-api-key"

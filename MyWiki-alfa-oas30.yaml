@@ -45,6 +45,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Page"
       security:
+      - CognitoAmplify: []
       - api_key: []
     delete:
       parameters:
@@ -68,6 +69,7 @@ paths:
                 type: "string"
           content: {}
       security:
+      - CognitoAmplify: []
       - api_key: []
     options:
       requestBody:
@@ -137,6 +139,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Pages"
       security:
+      - CognitoAmplify: []
       - api_key: []
     post:
       tags:
@@ -164,7 +167,7 @@ paths:
                 type: "string"
           content: {}
       security:
-      - api_key: []
+      - CognitoAmplify: []
     options:
       requestBody:
         content:
@@ -223,6 +226,11 @@ components:
         content:
           type: "string"
   securitySchemes:
+    CognitoAmplify:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "cognito_user_pools"
     api_key:
       type: "apiKey"
       name: "x-api-key"

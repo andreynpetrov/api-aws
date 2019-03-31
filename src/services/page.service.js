@@ -1,5 +1,6 @@
 import config from "config";
 import apigClientFactory from "aws-api-gateway-client";
+import { Auth } from 'aws-amplify';
 
 export const pageService = {
   createPage,
@@ -10,46 +11,72 @@ export const pageService = {
 
 var apigClient = apigClientFactory.newClient(config);
 
-function createPage(state, page) {
-  const pathParams = {};
-  const pathTemplate = "/pages";
-  const additionalParams = {};
-  const body = page;
-
-  return apigClient
-    .invokeApi(pathParams, pathTemplate, "POST", additionalParams, body)
-    .then(handleResponse);
-}
-
-function deletePage(state, slug) {
-  const pathParams = {
-    pageSlug: slug
-  };
-  const pathTemplate = "/pages/{pageSlug}";
-
-  return apigClient
-    .invokeApi(pathParams, pathTemplate, "DELETE")
-    .then(handleResponse);
-}
-
 function getPage(state, slug) {
-  const pathParams = {
-    pageSlug: slug
-  };
-  const pathTemplate = "/pages/{pageSlug}";
-
-  return apigClient
-    .invokeApi(pathParams, pathTemplate, "GET")
-    .then(handleResponse);
+  return Auth.currentSession()
+    .then(session => {
+      return {
+        pathParams: { pageSlug: slug },
+        pathTemplate: "/pages/{pageSlug}",
+        method: "GET",
+        additionalParams: { headers: { Authorization: session.idToken.jwtToken } },
+        body: {}
+      }
+    })
+    .then(callAPI)
+    .catch(err => console.log('error happened', err));
 }
 
 function getPageList(state) {
-  const pathParams = {};
-  const pathTemplate = "/pages";
+  return Auth.currentSession()
+    .then(session => {
+      return {
+        pathParams: {},
+        pathTemplate: "/pages",
+        method: "GET",
+        additionalParams: { headers: { Authorization: session.idToken.jwtToken } },
+        body: {}
+      }
+    })
+    .then(callAPI)
+    .catch(err => console.log('error happened', err));
+}
 
+function createPage(state, page) {
+  return Auth.currentSession()
+    .then(session => {
+      return {
+        pathParams: {},
+        pathTemplate: "/pages",
+        method: "POST",
+        additionalParams: { headers: { Authorization: session.idToken.jwtToken } },
+        body: page
+      }
+    })
+    .then(callAPI)
+    .catch(err => console.log('error happened', err));
+}
+
+function deletePage(state, slug) {
+  return Auth.currentSession()
+    .then(session => {
+      return {
+        pathParams: { pageSlug: slug },
+        pathTemplate: "/pages/{pageSlug}",
+        method: "DELETE",
+        additionalParams: { headers: { Authorization: session.idToken.jwtToken } },
+        body: {}
+      }
+    })
+    .then(callAPI)
+    .catch(err => console.log('error happened', err));
+}
+
+function callAPI(r) {
+  //console.log(r);
   return apigClient
-    .invokeApi(pathParams, pathTemplate, "GET")
-    .then(handleResponse);
+    .invokeApi(r.pathParams, r.pathTemplate, r.method, r.additionalParams, r.body)
+    .then(handleResponse)
+    .catch(err => console.log('error happened', err));
 }
 
 function handleResponse(response) {
