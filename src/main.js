@@ -2,6 +2,7 @@ import "@babel/polyfill";
 import "./plugins/bootstrap-vue";
 import "./registerServiceWorker";
 import Vue from "vue";
+import './plugins/vuetify'
 import VueRouter from "vue-router";
 
 // amplify configuration

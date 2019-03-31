@@ -12,15 +12,13 @@
     "aws-amplify": "^1.1.22",
     "aws-amplify-vue": "^0.2.7",
     "aws-api-gateway-client": "^0.2.16",
-    "bootstrap": "^4.3.1",
-    "bootstrap-vue": "^2.0.0-rc.15",
     "core-js": "2",
     "marked": "^0.6.1",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "vuex-persistedstate": "^2.5.4"
+    "vuetify": "^1.5.5",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.2.5",
@@ -38,7 +36,11 @@
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
     "vue-cli-plugin-bootstrap-vue": "^0.2.0",
-    "vue-template-compiler": "^2.5.21"
+    "vue-cli-plugin-vuetify": "^0.5.0",
+    "vue-template-compiler": "^2.5.21",
+    "vuetify-loader": "^1.0.5"
   }
 }

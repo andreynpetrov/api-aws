@@ -1,77 +1,38 @@
 <template>
-  <div id="app">
-    <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand :to="{ name: 'home' }">Wiki</b-navbar-brand>
-      <b-navbar-toggle target="nav_collapse" />
-      <b-collapse is-nav id="nav_collapse">
-        <b-navbar-nav>
-          <b-nav-item :to="{ name: 'pages' }">Pages</b-nav-item>          
-          <b-nav-item
-            v-if="this.signedIn"
-            :to="{ name: 'auth' }"
-            @click="signOut"
-            >SignOut</b-nav-item
-          >
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
-    <router-view />
-  </div>
+  <v-app>
+    <v-toolbar app>
+      <v-toolbar-title class="headline text-uppercase">
+        <span>Vuetify</span>
+        <span class="font-weight-light">MATERIAL DESIGN</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn
+        flat
+        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        target="_blank"
+      >
+        <span class="mr-2">Latest Release</span>
+      </v-btn>
+    </v-toolbar>
+
+    <v-content>
+      <HelloWorld/>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import { components } from "aws-amplify-vue";
-import { AmplifyEventBus } from "aws-amplify-vue";
-import { Auth } from "aws-amplify";
-import { mapState } from "vuex";
+import HelloWorld from './components/HelloWorld'
 
 export default {
-  name: "app",
-  async beforeCreate() {
-    try {
-      // eslint-disable-next-line
-      const user = await Auth.currentAuthenticatedUser();
-      this.signedIn = true;
-    } catch (err) {
-      this.signedIn = false;
-    }
-    AmplifyEventBus.$on("authState", info => {
-      if (info === "signedIn") {
-        this.signedIn = true;
-      } else {
-        this.signedIn = false;
-      }
-    });
-  },
-  data() {
-    return {
-      signedIn: false,
-      logger: {}
-    };
-  },
+  name: 'App',
   components: {
-    ...components
+    HelloWorld
   },
-  async mounted() {
-    this.logger = new this.$Amplify.Logger(this.$options.name);
-  },
-  computed: {
-    ...mapState({ user: "account/user" })
-  },
-  methods: {
-    // eslint-disable-next-line
-    signOut: function(event) {
-      Auth.signOut()
-        .then(() => {
-          this.logger.info("signout success");
-          return AmplifyEventBus.$emit("authState", "signedOut");
-        })
-        .catch(e => this.setError(e));
-    },
-    setError: function(e) {
-      this.error = this.$Amplify.I18n.get(e.message || e);
-      this.logger.error(this.error);
+  data () {
+    return {
+      //
     }
   }
-};
+}
 </script>
