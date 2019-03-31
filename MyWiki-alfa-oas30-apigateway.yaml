@@ -244,6 +244,7 @@ paths:
           content: {}
       security:
       - CognitoAmplify: []
+      - api_key: []
       x-amazon-apigateway-request-validator: "Validate body, query string parameters,\
         \ and headers"
       x-amazon-apigateway-integration:
