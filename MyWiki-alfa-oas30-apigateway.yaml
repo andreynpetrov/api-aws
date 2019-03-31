@@ -59,8 +59,9 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
             responseTemplates:
               application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"slug\"\
-                : \"$inputRoot.Item.slug.S\",\n  \"title\": \"$inputRoot.Item.title.S\"\
-                ,\n  \"content\": \"$inputRoot.Item.content.S\"\n}"
+                : \"$util.escapeJavaScript($inputRoot.Item.slug.S)\",\n  \"title\"\
+                : \"$util.escapeJavaScript($inputRoot.Item.title.S)\",\n  \"content\"\
+                : \"$util.escapeJavaScript($inputRoot.Item.content.S)\"\n}"
         passthroughBehavior: "when_no_templates"
         httpMethod: "POST"
         requestTemplates:
@@ -164,12 +165,6 @@ paths:
         description: "How many items to return at one time"
         schema:
           type: "string"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Pages"
-        required: true
       responses:
         500:
           description: "Unexpected error"
@@ -206,9 +201,10 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
             responseTemplates:
               application/json: "#set($inputRoot = $input.path('$'))\n[\n#foreach($elem\
-                \ in $inputRoot.Items)\n {\n  \"title\" : \"$elem.title.S\",\n  \"\
-                slug\" : \"$elem.slug.S\",\n  \"content\" : \"$elem.content.S\"\n\
-                } \n#if($foreach.hasNext),#end\n#end\n]"
+                \ in $inputRoot.Items)\n {\n  \"title\" : \"$util.escapeJavaScript($elem.title.S)\"\
+                ,\n  \"slug\" : \"$util.escapeJavaScript($elem.slug.S)\",\n  \"content\"\
+                \ : \"$util.escapeJavaScript($elem.content.S)\"\n} \n#if($foreach.hasNext),#end\n\
+                #end\n]"
         passthroughBehavior: "when_no_templates"
         httpMethod: "POST"
         requestTemplates:
@@ -266,12 +262,6 @@ paths:
             \ }      \n   }\n}      "
         type: "aws"
     options:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Pages"
-        required: true
       responses:
         200:
           description: "200 response"

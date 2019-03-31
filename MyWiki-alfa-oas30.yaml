@@ -111,12 +111,6 @@ paths:
         description: "How many items to return at one time"
         schema:
           type: "string"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Pages"
-        required: true
       responses:
         500:
           description: "Unexpected error"
@@ -170,12 +164,6 @@ paths:
       - CognitoAmplify: []
       - api_key: []
     options:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Pages"
-        required: true
       responses:
         200:
           description: "200 response"
