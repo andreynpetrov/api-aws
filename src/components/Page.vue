@@ -1,47 +1,27 @@
 <template>
   <div class="page">
-    <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-    v-if="edit"
-    >
-    <v-text-field
-      v-model="form.title"
-      label="Title"
-      required
-    ></v-text-field>
+    <v-form ref="form" v-model="valid" lazy-validation v-if="edit">
+      <v-text-field v-model="form.title" label="Title" required></v-text-field>
 
-    <v-textarea
-      v-model="form.content"
+      <v-textarea
+        v-model="form.content"
         label="Content"
         placeholder="Enter page content in mardown markup."
         auto-grow
         full-width
         single-line
         required
-    ></v-textarea>
+      ></v-textarea>
 
-    <v-btn
-      color="success"
-      @click="submitEdit"
-    >
-      Submit
-    </v-btn>
+      <v-btn color="success" @click="submitEdit">Submit</v-btn>
 
-    <v-btn
-      color="error"
-      @click="cancelEdit"
-    >
-      Cancel
-    </v-btn>
-
-  </v-form>
+      <v-btn color="error" @click="cancelEdit">Cancel</v-btn>
+    </v-form>
     <div v-else>
       <h1>{{ page.title }}</h1>
       <div v-html="htmlContent"></div>
       <v-btn v-on:click="enableEdit">Edit</v-btn>
-      <v-btn v-on:ok="submitDelete">Delete</v-btn>
+      <v-btn v-on:click="submitDelete">Delete</v-btn>
     </div>
   </div>
 </template>
