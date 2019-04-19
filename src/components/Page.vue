@@ -16,7 +16,7 @@
       v-model="form.content"
         label="Content"
         placeholder="Enter page content in mardown markup."
-        auto-grow="true"
+        auto-grow
         full-width
         single-line
         required
