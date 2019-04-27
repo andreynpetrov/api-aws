@@ -23,6 +23,25 @@
     <v-toolbar color="blue darken-3" dark fixed app>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Wiki</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat>Link One</v-btn>
+        <v-btn flat>Link Two</v-btn>
+        <v-btn flat>Link Three</v-btn>
+        <amplify-sign-out v-if="user"></amplify-sign-out>
+        <v-btn icon>
+        <v-icon>search</v-icon>
+        </v-btn>
+        <v-btn icon>
+        <v-icon>apps</v-icon>
+        </v-btn>
+        <v-btn icon>
+        <v-icon>refresh</v-icon>
+        </v-btn>
+        <v-btn icon>
+        <v-icon>more_vert</v-icon>
+        </v-btn>
+    </v-toolbar-items>
     </v-toolbar>
     <v-content>
       <v-container fluid fill-height>
@@ -77,7 +96,9 @@ export default {
     this.logger = new this.$Amplify.Logger(this.$options.name);
   },
   computed: {
-    ...mapState({ user: "account/user" })
+    ...mapState('account', { 
+            user: state => state.user, 
+      })
   },
   methods: {
     // eslint-disable-next-line
