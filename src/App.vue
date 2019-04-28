@@ -18,28 +18,23 @@
             <v-list-tile-title>Pages</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile v-if="user" v-on:click="signOut">
+          <v-list-tile-action>
+            <v-icon>face</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Sign Out</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="blue darken-3" dark fixed app>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>Wiki</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn flat>Link One</v-btn>
-        <v-btn flat>Link Two</v-btn>
-        <v-btn flat>Link Three</v-btn>
-        <amplify-sign-out v-if="user"></amplify-sign-out>
+      <v-toolbar-items>
         <v-btn icon>
         <v-icon>search</v-icon>
-        </v-btn>
-        <v-btn icon>
-        <v-icon>apps</v-icon>
-        </v-btn>
-        <v-btn icon>
-        <v-icon>refresh</v-icon>
-        </v-btn>
-        <v-btn icon>
-        <v-icon>more_vert</v-icon>
         </v-btn>
     </v-toolbar-items>
     </v-toolbar>
