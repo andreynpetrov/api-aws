@@ -33,10 +33,8 @@
       <v-toolbar-title>Wiki</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn icon>
-        <v-icon>search</v-icon>
-        </v-btn>
-    </v-toolbar-items>
+        <v-text-field v-if="user" v-model="query" @click:append="search" clearable hide-details append-icon="search" single-line></v-text-field>
+      </v-toolbar-items>
     </v-toolbar>
     <v-content>
       <v-container fluid fill-height>
@@ -78,7 +76,8 @@ export default {
     return {
       signedIn: false,
       logger: {},
-      drawer: null
+      drawer: null,
+      query: null
     };
   },
   props: {
@@ -91,9 +90,9 @@ export default {
     this.logger = new this.$Amplify.Logger(this.$options.name);
   },
   computed: {
-    ...mapState('account', { 
-            user: state => state.user, 
-      })
+    ...mapState("account", {
+      user: state => state.user
+    })
   },
   methods: {
     // eslint-disable-next-line
@@ -108,7 +107,11 @@ export default {
     setError: function(e) {
       this.error = this.$Amplify.I18n.get(e.message || e);
       this.logger.error(this.error);
-    }
+    },
+    search: function(event) {
+      this.logger.info("search method exec");
+      this.$router.push({ name: "searchContent", params: { query: this.query } });
+    },
   }
 };
 </script>

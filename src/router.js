@@ -81,6 +81,12 @@ const router = new VueRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: "/search/content/:query",
+      name: "searchContent",
+      component: () => import("./views/SearchView.vue"),
+      meta: { requiresAuth: true }
+    },
+    {
       path: "/auth",
       name: "auth",
       component: components.Authenticator

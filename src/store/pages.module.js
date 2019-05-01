@@ -2,7 +2,8 @@ import { pageService } from "../services";
 
 const state = {
   page: {},
-  pageList: {}
+  pageList: {},
+  pageSearchResults: {}
 };
 
 const actions = {
@@ -41,6 +42,15 @@ const actions = {
         response => commit("getPageListSuccess", response),
         error => commit("getPageListFailure", error)
       );
+  },
+  getPageSearchResults({ state, commit }, body) {
+    commit("getPageSearchResultsRequest");
+    pageService
+      .getPageSearchResults(state, body)
+      .then(
+        response => commit("getPageSearchResultsSuccess", response),
+        error => commit("getPageSearchResultsFailure", error)
+      );
   }
 };
 
@@ -53,6 +63,15 @@ const mutations = {
   },
   getPageFailure(state, error) {
     state.page = { error };
+  },
+  getPageSearchResultsRequest(state) {
+    state.pageSearchResults = { loading: true };
+  },
+  getPageSearchResultsSuccess(state, response) {
+    state.pageSearchResults = response;
+  },
+  getPageSearchResultsFailure(state, error) {
+    state.pageSearchResults = { error };
   },
   createPageRequest(state) {
     state.page = { loading: true };

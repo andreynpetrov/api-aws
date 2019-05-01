@@ -6,7 +6,8 @@ export const pageService = {
   createPage,
   deletePage,
   getPage,
-  getPageList
+  getPageList,
+  getPageSearchResults
 };
 
 var apigClient = apigClientFactory.newClient(config);
@@ -22,6 +23,23 @@ function getPage(state, slug) {
           headers: { Authorization: session.idToken.jwtToken }
         },
         body: {}
+      };
+    })
+    .then(callAPI)
+    .catch(err => console.log("error happened", err));
+}
+
+function getPageSearchResults(state, body) {
+  return Auth.currentSession()
+    .then(session => {
+      return {
+        pathParams: {},
+        pathTemplate: "/search",
+        method: "POST",
+        additionalParams: {
+          headers: { Authorization: session.idToken.jwtToken }
+        },
+        body: body
       };
     })
     .then(callAPI)
