@@ -152,6 +152,85 @@ paths:
         requestTemplates:
           application/json: "{\"statusCode\": 200}"
         type: "mock"
+  /search:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PageSearchQuery"
+        required: true
+      responses:
+        500:
+          description: "500 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        200:
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageSearchResults"
+      security:
+      - CognitoAmplify: []
+      - api_key: []
+      x-amazon-apigateway-request-validator: "Validate body, query string parameters,\
+        \ and headers"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:eu-west-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-1:904317604667:function:mySearch/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_templates"
+        httpMethod: "POST"
+        requestTemplates:
+          application/json: "{\n    \"cognitosub\" : \"$context.authorizer.claims['sub']\"\
+            ,\n    \"field\" : $input.json('$.field'),\n    \"query\" : $input.json('$.query')\n\
+            }"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+    options:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            X-Requested-With:
+              schema:
+                type: "string"
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageSearchResults"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'POST,OPTIONS'"
+              method.response.header.X-Requested-With: "'*'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-requested-with'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        requestTemplates:
+          application/json: "{\"statusCode\": 200}"
+        type: "mock"
   /pages:
     get:
       tags:
@@ -301,6 +380,26 @@ components:
       type: "array"
       items:
         $ref: "#/components/schemas/Page"
+    PageSearchResult:
+      required:
+      - "slug"
+      - "title"
+      type: "object"
+      properties:
+        title:
+          type: "string"
+        slug:
+          type: "string"
+    PageSearchQuery:
+      required:
+      - "field"
+      - "query"
+      type: "object"
+      properties:
+        field:
+          type: "string"
+        query:
+          type: "string"
     Error:
       required:
       - "code"
@@ -325,6 +424,10 @@ components:
           type: "string"
         content:
           type: "string"
+    PageSearchResults:
+      type: "array"
+      items:
+        $ref: "#/components/schemas/PageSearchResult"
   securitySchemes:
     CognitoAmplify:
       type: "apiKey"

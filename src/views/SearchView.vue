@@ -7,7 +7,7 @@
     <div v-if="pageSearchResults.loading">Loading</div>
     <PageItem
       v-else
-      v-for="(item, index) in pageSearchResults.PageSearchResults"
+      v-for="(item, index) in pageSearchResults"
       v-bind:index="index"
       v-bind:page="item"
     ></PageItem>
