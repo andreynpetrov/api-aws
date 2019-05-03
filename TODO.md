@@ -1,4 +1,6 @@
 * Add mediawiki style links to pages: [[aws]]
+  + Vue.compile https://jsfiddle.net/Linusborg/1zdzu7k1/
+  + https://dennisreimann.de/articles/delegating-html-links-to-vue-router.html
 * Add /search POST method to backend
   + https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.Tutorial.html 
   + https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.Lambda.BestPracticesWithDynamoDB.html

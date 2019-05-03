@@ -24,8 +24,14 @@ export default {
       getPage: "pages/getPage"
     })
   },
-  mounted: function() {
+  created: function() {
     this.getPage(this.$route.params.slug);
+  },
+  watch: {
+    '$route' (to, from) {
+      // react to route changes...
+      this.getPage(this.$route.params.slug);
+    }
   }
 };
 </script>

@@ -19,9 +19,10 @@
     </v-form>
     <div v-else>
       <h1>{{ page.title }}</h1>
-      <div v-html="htmlContent"></div>
+      <Dynamic v-bind:template="htmlContent"></Dynamic>
       <v-btn v-on:click="enableEdit">Edit</v-btn>
       <v-btn v-on:click="submitDelete">Delete</v-btn>
+      <v-btn :to="{ name: 'home'}">Home</v-btn>
     </div>
   </div>
 </template>
@@ -29,9 +30,19 @@
 <script>
 import * as marked from "marked";
 import { mapActions } from "vuex";
+import Dynamic from "@/components/Dynamic.vue";
+
+var renderer = new marked.Renderer();
+
+renderer.link = function(href, title, text) {
+  return `<router-link to="${href}">${text}</router-link>`;
+};
 
 export default {
   name: "Page",
+  components: {
+    Dynamic
+  },
   props: {
     page: Object
   },
@@ -39,6 +50,7 @@ export default {
     return {
       valid: true,
       edit: false,
+      test: "<p>my test</p>", 
       form: {
         slug: this.page.slug,
         title: this.page.title,
@@ -73,7 +85,10 @@ export default {
   computed: {
     htmlContent: function() {
       if (this.page.content) {
-        return marked(this.page.content, { sanitize: true });
+        return "<div>" + marked(this.page.content, {
+          sanitize: true,
+          renderer: renderer
+        }) + "</div>";
       } else {
         return "Loaded...";
       }
